@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DUCKPATH=/data/duckdns
+DUCKPATH=/etc/duckdns.d
 TOKEN=changeme
 DOMAINS=moo
 
