@@ -1,17 +1,13 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-logger -t DuckDNS "Updating DuckDNS entries"
-EXITCODE=0
-for file in /etc/duckdns.d/*.cfg
-do
-	source "${file}"
-	logger -t DuckDNS "Executing config file '${file}'"
-	OUTPUT=$(curl -k -s "https://www.duckdns.org/update?domains=${duckdns_hostname}&token=${duckdns_token}&ip=")
-	logger -t DuckDNS ${OUTPUT}
-	if [ "${OUTPUT}" == "KO" ]; then
-		logger -t DuckDNS "You should check if your domain/token is correct because the server responded negatively!"
-		$EXITCODE=1
-	fi
-done
+DUCKPATH=/data/duckdns
+TOKEN=changeme
+DOMAINS=moo
 
-exit $EXITCODE
+curl -sSv "https://www.duckdns.org/update?domains=${DOMAINS}&token=${TOKEN}&ip=" \
+  2>> ${DUCKPATH}/stderr.log \
+   >> ${DUCKPATH}/stdout.log
+
+printf ' - ' >> ${DUCKPATH}/stdout.log
+
+date >> ${DUCKPATH}/stdout.log
